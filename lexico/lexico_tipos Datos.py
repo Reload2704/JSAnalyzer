@@ -63,6 +63,8 @@ def t_IDENTIFIER(t):
 # Caracteres ignorados
 t_ignore = ' \t\n'
 
+log_lineas = []
+
 def t_error(t):
     print(f"Carácter ilegal: '{t.value[0]}'")
     t.lexer.skip(1)
@@ -71,7 +73,7 @@ lexer = lex.lex()
 
 # --- Prueba del Analizador ---
 if __name__ == '__main__':
-    codigo_js = "3.14 100n 'hola mundo' true null undefined"
+    codigo_js = "(0.5) [false] ; . {1899n }"
     
     lexer.input(codigo_js)
     while True:

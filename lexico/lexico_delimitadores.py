@@ -1,9 +1,7 @@
-from .ply import lex
-from .ply import yacc
+from ply import lex
+from ply import yacc
 
-tokens = ("LKEY", 'RKEY', 'LPAREN', 'RPAREN', 'LBRACKET', 'RBRACKET', 'COMMA', 'SEMICOLON', 'DOT')
-
-t_ignore = ' \t'
+tokens = ("LKEY", 'RKEY', 'LPAREN', 'RPAREN', 'LBRACKET', 'RBRACKET', 'COMMA', 'SEMICOLON', 'DOT', "EQUALS")
 
 t_LKEY = r'\{'
 t_RKEY = r'\}'
@@ -14,6 +12,7 @@ t_RBRACKET = r'\]'
 t_COMMA = r','
 t_SEMICOLON = r';'
 t_DOT = r'\.'
+t_EQUALS = r'='
 
 t_ignore = ' \t'
 
@@ -26,9 +25,9 @@ lexer = lex.lex()
 # --- Prueba del Analizador ---
 if __name__ == '__main__':
     # Un fragmento de código JavaScript de prueba con tus delimitadores
-    codigo_js = "if (matriz[0].valor == { x: 1 }) { console.log(); }"
+    codigo_js = "[{. =}, ()];"
     
-    print("Analizando código fuente...")
+    print("~~~ Analizando código fuente ~~~")
     lexer.input(codigo_js)
     
     # Leer los tokens generados
