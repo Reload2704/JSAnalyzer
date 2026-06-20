@@ -4,9 +4,13 @@
 #   archivo  -> prueba de la persona (.js)   (por ejemplo algoritmo_jorge.js)
 # Genera: lexico-<nombre>-DD-MM-YYYY-HHhMM.txt
 
+import os
 import sys
 from datetime import datetime
 import lexerJS as lx
+
+# Carpeta donde se guardan todos los logs (junto a este script)
+CARPETA_LOGS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logs")
 
 
 def generar_log(nombre, archivo):
@@ -20,9 +24,11 @@ def generar_log(nombre, archivo):
     tokens = list(lx.lexer)
     errores = lx.errores_lexicos
 
-    # Nombre del log: lexico-nombre-fecha-hora.txt
+    # Nombre del log: lexico-nombre-fecha-hora.txt (dentro de la carpeta logs)
     ahora = datetime.now()
-    nombre_log = "lexico-{}-{}.txt".format(nombre, ahora.strftime("%d-%m-%Y-%Hh%M"))
+    os.makedirs(CARPETA_LOGS, exist_ok=True)
+    nombre_archivo_log = "lexico-{}-{}.txt".format(nombre, ahora.strftime("%d-%m-%Y-%Hh%M"))
+    nombre_log = os.path.join(CARPETA_LOGS, nombre_archivo_log)
 
     # Escribir el log
     with open(nombre_log, "w", encoding="utf-8") as log:
