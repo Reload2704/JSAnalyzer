@@ -9,11 +9,21 @@ import sys
 from datetime import datetime
 import lexerJS as lx
 
-# Carpeta donde se guardan todos los logs (junto a este script)
-CARPETA_LOGS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logs")
+# Carpeta del script (aqui viven los algoritmos .js y los logs)
+CARPETA_SCRIPT = os.path.dirname(os.path.abspath(__file__))
+CARPETA_LOGS = os.path.join(CARPETA_SCRIPT, "logs")
+
+
+def resolver_archivo(archivo):
+    """Devuelve la ruta del .js: tal cual si existe/es absoluta,
+    si no, lo busca junto a este script (carpeta lexico)."""
+    if os.path.isabs(archivo) or os.path.exists(archivo):
+        return archivo
+    return os.path.join(CARPETA_SCRIPT, archivo)
 
 
 def generar_log(nombre, archivo):
+    archivo = resolver_archivo(archivo)
     with open(archivo, encoding="utf-8") as f:
         codigo = f.read()
 
