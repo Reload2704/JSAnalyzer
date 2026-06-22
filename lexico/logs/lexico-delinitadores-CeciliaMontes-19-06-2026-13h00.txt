@@ -1,0 +1,17 @@
+DELIMITADORES
+13:00 pm
+Prueba 4 con: ([]. = { }) { .(); }
+LexToken(LPAREN,'(',1,1)
+LexToken(LBRACKET,'[',1,2)
+LexToken(RBRACKET,']',1,3)
+LexToken(DOT,'.',1,4)
+LexToken(EQUALS,'=',1,6)
+LexToken(LKEY,'{',1,8)
+LexToken(RKEY,'}',1,10)
+LexToken(RPAREN,')',1,11)
+LexToken(LKEY,'{',1,13)
+LexToken(DOT,'.',1,15)
+LexToken(LPAREN,'(',1,16)
+LexToken(RPAREN,')',1,17)
+LexToken(SEMICOLON,';',1,18)
+LexToken(RKEY,'}',1,20)

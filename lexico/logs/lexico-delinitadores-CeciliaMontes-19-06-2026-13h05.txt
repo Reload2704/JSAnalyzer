@@ -1,0 +1,11 @@
+Prueba 5 con: [{. =}, ()];
+LexToken(LBRACKET,'[',1,0)
+LexToken(LKEY,'{',1,1)
+LexToken(DOT,'.',1,2)
+LexToken(EQUALS,'=',1,4)
+LexToken(RKEY,'}',1,5)
+LexToken(COMMA,',',1,6)
+LexToken(LPAREN,'(',1,8)
+LexToken(RPAREN,')',1,9)
+LexToken(RBRACKET,']',1,10)
+LexToken(SEMICOLON,';',1,11)

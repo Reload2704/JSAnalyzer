@@ -20,7 +20,7 @@ tokens = (
     'STRICT_EQ', 'EQ', 'NEQ', 'LT', 'GT',
     # ===== FIN APORTE JORGE BRAVO =====
 
-    # ===== INICIO APORTES CECILIA =====
+    # ===== INICIO APORTES CECILIA MONTES =====
     # Delimitadores
     'LKEY', 'RKEY', 'LPAREN', 'RPAREN', 'LBRACKET', 'RBRACKET',
     'COMMA', 'SEMICOLON', 'DOT',
@@ -30,6 +30,7 @@ tokens = (
     # ===== FIN APORTES CECILIA =====
 
     # ===== INICIO APORTES FIORELLA =====
+    'LET', 'CONST', 'VAR', 'IF', 'ELSE', 'FOR', 'WHILE', 'FUNCTION', 'RETURN', 'SWITCH', 'BREAK'
 
     # ===== FIN APORTES FIORELLA =====
 )
@@ -79,9 +80,37 @@ t_GT           = r'>'       # mayor
 # FIN APORTE JORGE BRAVO - Operadores
 # =====================================================================
 
+# =====================================================================
+# INICIO APORTES FIORELLA QUIJANO - Variables y Palabras Reservadas
+
+# Variables y palabras reservadas 
+
+reserved = {
+    'let': 'LET',
+    'const': 'CONST',
+    'var': 'VAR',
+    'if': 'IF',
+    'else': 'ELSE',
+    'for': 'FOR',
+    'while': 'WHILE',
+    'function': 'FUNCTION',
+    'return': 'RETURN',
+    'switch': 'SWITCH',
+    'break': 'BREAK'
+}
+
+#Por motivos de compatibilidad con el analizador de tipos de datos, se unifica el t_IDENTIFIER con el t_VARIABLE, de esta manera se puede reconocer las palabras reservadas y los identificadores de variables en un solo token.
+
+# def t_VARIABLE(t):
+#    r'[a-zA-Z_$][a-zA-Z0-9_$]*'
+#    t.type = reserved.get(t.value, 'VARIABLE')
+#    return t
+
+# FIN APORTES FIORELLA QUIJANO - Variables y Palabras Reservadas
+# =====================================================================
 
 # =====================================================================
-# INICIO APORTES CECILIA - Delimitadores y Tipos de datos
+# INICIO APORTES CECILIA MONTES - Delimitadores y Tipos de datos
 
 # Delimitadores
 t_LKEY      = r'\{'
@@ -116,6 +145,11 @@ def t_NUMBER(t):
 # Usamos una función para evitar que "true" sea confundido con el nombre de una variable
 def t_IDENTIFIER(t):
     r'[a-zA-Z_$][a-zA-Z0-9_$]*'
+
+    #PARTE DE FIORELLA QUIJANO - Se unifica el t_IDENTIFIER con el t_VARIABLE, de esta manera se puede reconocer las palabras reservadas y los identificadores de variables en un solo token.
+    if t.value in reserved:
+        t.type = reserved[t.value]
+    #FIN PARTE DE FIORELLA QUIJANO
     
     # Validamos si el identificador es en realidad una palabra reservada de tipo de dato
     if t.value == 'true' or t.value == 'false':
@@ -130,9 +164,8 @@ def t_IDENTIFIER(t):
     
     return t
 
-# FIN APORTES CECILIA - Delimitadores y Tipos de datos
+# FIN APORTES CECILIA MONTES - Delimitadores y Tipos de datos
 # =====================================================================
-
 
 # ---------------------------------------------------------------------
 # Manejo de lineas, espacios y errores

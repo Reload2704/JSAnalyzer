@@ -1,0 +1,25 @@
+LOG ANALISIS LEXICO - archivo: algoritmo_cecilia.js
+Generado por: Cecilia Montes
+Fecha: 22-06-2026 01:03:55
+Tokens reconocidos: 20  |  Errores: 0
+-------------------------------------------------------
+Linea 1   | COMMENT_LINE | '// ==================================================================='
+Linea 2   | COMMENT_LINE | '// Algoritmo de prueba - Montes Muñoz Cecilia Inés'
+Linea 3   | COMMENT_LINE | '// Componente: TIPOS DE DATOS Y DELIMITADORES (JavaScript)'
+Linea 4   | COMMENT_LINE | '// ==================================================================='
+Linea 6   | LBRACKET     | '['
+Linea 6   | NUMBER       | 42
+Linea 6   | COMMA        | ','
+Linea 6   | BIGINT       | 100
+Linea 6   | COMMA        | ','
+Linea 6   | STRING       | 'Hola Mundo'
+Linea 6   | COMMA        | ','
+Linea 6   | BOOLEAN      | True
+Linea 6   | COMMA        | ','
+Linea 6   | NULL         | None
+Linea 6   | COMMA        | ','
+Linea 6   | LPAREN       | '('
+Linea 6   | UNDEFINED    | 'undefined'
+Linea 6   | RPAREN       | ')'
+Linea 6   | RBRACKET     | ']'
+Linea 6   | SEMICOLON    | ';'
