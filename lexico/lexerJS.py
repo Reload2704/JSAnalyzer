@@ -13,7 +13,7 @@ tokens = (
     'INCREMENT', 'DECREMENT',
 
     # Asignacion (simple, aditiva, sustractiva)
-    'ASSIGN', 'PLUS_ASSIGN', 'MINUS_ASSIGN', 'ARROW',
+    'ASSIGN', 'PLUS_ASSIGN', 'MINUS_ASSIGN', 'ARROW', 'COLON'
 
     # Logicos / Comparacion
     'AND', 'OR', 'NOT',
@@ -65,6 +65,7 @@ t_DECREMENT    = r'--'      # decremento
 t_PLUS_ASSIGN  = r'\+='     # asignacion aditiva
 t_MINUS_ASSIGN = r'-='      # asignacion sustractiva
 t_ARROW        = r'=>'
+t_COLON        = r':'
 t_AND          = r'&&'      # AND logico
 t_OR           = r'\|\|'    # OR logico
 
