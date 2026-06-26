@@ -13,11 +13,11 @@ tokens = (
     'INCREMENT', 'DECREMENT',
 
     # Asignacion (simple, aditiva, sustractiva)
-    'ASSIGN', 'PLUS_ASSIGN', 'MINUS_ASSIGN',
+    'ASSIGN', 'PLUS_ASSIGN', 'MINUS_ASSIGN', 'ARROW',
 
     # Logicos / Comparacion
     'AND', 'OR', 'NOT',
-    'STRICT_EQ', 'EQ', 'NEQ', 'LT', 'GT',
+    'STRICT_EQ', 'EQ', 'NEQ', 'LT', 'GT', 'GTE', 'LTE', 'STRICT_NEQ',
     # ===== FIN APORTE JORGE BRAVO =====
 
     # ===== INICIO APORTES CECILIA MONTES =====
@@ -64,6 +64,7 @@ t_INCREMENT    = r'\+\+'    # incremento
 t_DECREMENT    = r'--'      # decremento
 t_PLUS_ASSIGN  = r'\+='     # asignacion aditiva
 t_MINUS_ASSIGN = r'-='      # asignacion sustractiva
+t_ARROW        = r'=>'
 t_AND          = r'&&'      # AND logico
 t_OR           = r'\|\|'    # OR logico
 
@@ -76,6 +77,9 @@ t_ASSIGN       = r'='       # asignacion simple
 t_NOT          = r'!'       # NOT logico
 t_LT           = r'<'       # menor
 t_GT           = r'>'       # mayor
+t_STRICT_NEQ = r'!=='
+t_GTE        = r'>='
+t_LTE        = r'<='
 
 # FIN APORTE JORGE BRAVO - Operadores
 # =====================================================================
