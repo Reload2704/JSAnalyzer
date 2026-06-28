@@ -172,6 +172,13 @@ def p_pares_clave_valor(p):
 
 # =====================================================================
 # INICIO APORTE CECILIA MONTES 
+# Permite que el valor de una propiedad sea otro objeto (objeto anidado)
+def p_valor(p):
+    '''
+    valor : expresion
+          | objeto
+    '''
+    pass
 
 # FIN APORTE CECILIA MONTES 
 # =====================================================================
