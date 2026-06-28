@@ -32,8 +32,14 @@ precedence = (
 # =====================================================================
 
 # =====================================================================
-# INICIO APORTE JORGE BRAVO 
-
+# INICIO APORTE JORGE BRAVO
+# Declaracion de variables con 'var' (con o sin inicializacion)
+def p_declaracion_var(p):
+    '''
+    declaracion : VAR IDENTIFIER ASSIGN expresion SEMICOLON
+                | VAR IDENTIFIER SEMICOLON
+    '''
+    pass
 # FIN APORTE JORGE BRAVO
 # =====================================================================
 
@@ -132,9 +138,16 @@ def p_condicion(p):
 # =====================================================================
 
 # =====================================================================
-# INICIO APORTE JORGE BRAVO 
-
-# FIN APORTE JORGE BRAVO 
+# INICIO APORTE JORGE BRAVO
+# Estructura de control if / if-else.
+# La condicion es una expresion (incluye comparaciones y booleanas).
+def p_if_else(p):
+    '''
+    estructura_control : IF LPAREN expresion RPAREN bloque
+                       | IF LPAREN expresion RPAREN bloque ELSE bloque
+    '''
+    pass
+# FIN APORTE JORGE BRAVO
 # =====================================================================
 
 # ~~~ ESTRUCTURAS DE DATOS ~~~
@@ -164,9 +177,28 @@ def p_pares_clave_valor(p):
 # =====================================================================
 
 # =====================================================================
-# INICIO APORTE JORGE BRAVO 
+# INICIO APORTE JORGE BRAVO
+# Estructura de datos: Array (arreglo literal y acceso por indice)
+def p_array(p):
+    '''
+    expresion : LBRACKET elementos RBRACKET
+    '''
+    pass
 
-# FIN APORTE JORGE BRAVO 
+def p_elementos(p):
+    '''
+    elementos : expresion
+              | elementos COMMA expresion
+              | empty
+    '''
+    pass
+
+def p_array_acceso(p):
+    '''
+    expresion : IDENTIFIER LBRACKET expresion RBRACKET
+    '''
+    pass
+# FIN APORTE JORGE BRAVO
 # =====================================================================
 
 # ~~~ DECLARACIONES DE FUNCIONES ~~~
@@ -210,15 +242,44 @@ def p_empty(p):
 # =====================================================================
 
 # =====================================================================
-# INICIO APORTE JORGE BRAVO 
-
-# FIN APORTE JORGE BRAVO 
+# INICIO APORTE JORGE BRAVO
+# Funcion como expresion (function expression).
+# Al ser una expresion se puede asignar a una variable:
+#   var saludar = function(persona) { ... };
+def p_funcion_expresion(p):
+    '''
+    expresion : FUNCTION LPAREN parametros RPAREN bloque
+    '''
+    pass
+# FIN APORTE JORGE BRAVO
 # =====================================================================
 
 # ~~~ IMPRESION Y SOLICITUD DE DATOS ~~~
 
 # =====================================================================
-# INICIO APORTE JORGE BRAVO 
+# INICIO APORTE JORGE BRAVO
+# Impresion: console.log(...) como sentencia.
+def p_impresion(p):
+    '''
+    impresion : IDENTIFIER DOT IDENTIFIER LPAREN argumentos RPAREN SEMICOLON
+    '''
+    pass
 
-# FIN APORTE JORGE BRAVO 
+# Solicitud de datos / llamada a funcion como expresion:
+#   prompt("..."), alert("..."), miFuncion(a, b)
+def p_solicitud(p):
+    '''
+    expresion : IDENTIFIER LPAREN argumentos RPAREN
+    '''
+    pass
+
+# Lista de argumentos para impresion y llamadas a funcion
+def p_argumentos(p):
+    '''
+    argumentos : expresion
+               | argumentos COMMA expresion
+               | empty
+    '''
+    pass
+# FIN APORTE JORGE BRAVO
 # =====================================================================
