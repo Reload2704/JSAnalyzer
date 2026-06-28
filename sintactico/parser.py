@@ -9,7 +9,11 @@ from lexico.lexerJS import tokens
 
 # =====================================================================
 # INICIO APORTE FIORELLA QUIJANO 
-
+def p_declaracion_let(p):
+    '''
+    declaracion : LET IDENTIFIER ASSIGN expresion SEMICOLON
+    '''
+    pass
 # FIN APORTE FIORELLA QUIJANO
 # =====================================================================
 
@@ -67,7 +71,26 @@ def p_expresion_parentesis(p):
 
 # =====================================================================
 # INICIO APORTE FIORELLA QUIJANO 
+def p_expresion_booleana(p):
+    '''
+    expresion : expresion AND expresion
+              | expresion OR expresion
+              | expresion EQ expresion
+              | expresion STRICT_EQ expresion
+              | expresion NEQ expresion
+              | expresion STRICT_NEQ expresion
+              | expresion LT expresion
+              | expresion GT expresion
+              | expresion LTE expresion
+              | expresion GTE expresion
+    '''
+    pass
 
+def p_expresion_not(p):
+    '''
+    expresion : NOT expresion
+    '''
+    pass
 # FIN APORTE FIORELLA QUIJANO 
 # =====================================================================
 
@@ -75,7 +98,11 @@ def p_expresion_parentesis(p):
 
 # =====================================================================
 # INICIO APORTE FIORELLA QUIJANO 
-
+def p_while(p):
+    '''
+    estructura_control : WHILE LPAREN expresion RPAREN bloque
+    '''
+    pass
 # FIN APORTE FIORELLA QUIJANO 
 # =====================================================================
 
@@ -114,7 +141,19 @@ def p_condicion(p):
 
 # =====================================================================
 # INICIO APORTE FIORELLA QUIJANO 
+def p_objeto_simple(p):
+    '''
+    expresion : LKEY pares_clave_valor RKEY
+              | LKEY empty RKEY
+    '''
+    pass
 
+def p_pares_clave_valor(p):
+    '''
+    pares_clave_valor : IDENTIFIER COLON expresion
+                      | IDENTIFIER COLON expresion COMMA pares_clave_valor
+    '''
+    pass
 # FIN APORTE FIORELLA QUIJANO 
 # =====================================================================
 
@@ -134,7 +173,11 @@ def p_condicion(p):
 
 # =====================================================================
 # INICIO APORTE FIORELLA QUIJANO 
-
+def p_funcion_tradicional(p):
+    '''
+    declaracion : FUNCTION IDENTIFIER LPAREN parametros RPAREN LKEY lista_sentencias RETURN expresion SEMICOLON RKEY
+    '''
+    pass
 # FIN APORTE FIORELLA QUIJANO 
 # =====================================================================
 
