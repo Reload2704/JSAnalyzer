@@ -1,0 +1,11 @@
+LOG ANALISIS (SEMANTICO) - archivo: algoritmo_jorge.js
+Generado por: JorgeBravo
+Fecha: 07-07-2026 23:35:21
+Flujo: lexer -> parser -> semantico
+============================================================
+
+=== ANALISIS SEMANTICO ===
+Errores semanticos: 0
+(Aviso: hubo errores sintacticos; el AST puede estar incompleto)
+Sin errores semanticos.
+

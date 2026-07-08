@@ -1,0 +1,22 @@
+LOG ANALISIS (SINTACTICO) - archivo: algoritmo_jorge.js
+Generado por: JorgeBravo
+Fecha: 07-07-2026 23:33:39
+Flujo: lexer -> parser -> semantico
+============================================================
+
+=== ANALISIS SINTACTICO ===
+Errores sintacticos: 13
+Error Sintactico [Linea 13]: token inesperado 'let' (LET).
+Error Sintactico [Linea 18]: token inesperado 'resultado' (IDENTIFIER).
+Error Sintactico [Linea 19]: token inesperado 'resultado' (IDENTIFIER).
+Error Sintactico [Linea 20]: token inesperado 'resultado' (IDENTIFIER).
+Error Sintactico [Linea 21]: token inesperado 'resultado' (IDENTIFIER).
+Error Sintactico [Linea 24]: token inesperado 'a' (IDENTIFIER).
+Error Sintactico [Linea 33]: token inesperado 'let' (LET).
+Error Sintactico [Linea 34]: token inesperado 'let' (LET).
+Error Sintactico [Linea 35]: token inesperado 'let' (LET).
+Error Sintactico [Linea 36]: token inesperado 'let' (LET).
+Error Sintactico [Linea 39]: token inesperado 'let' (LET).
+Error Sintactico [Linea 40]: token inesperado 'let' (LET).
+Error Sintactico [Linea 41]: token inesperado 'let' (LET).
+
