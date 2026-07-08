@@ -1,18 +1,24 @@
 # Analizador Semantico - JavaScript (PLY)
 # Proyecto LP - ESPOL 2026 PAO II
 #
-# Verifica que las construcciones reconocidas tengan un significado valido
-# segun las reglas semanticas de JavaScript. Ante una violacion genera un
-# mensaje del tipo:  Error Semantico [Linea X]: <causa>
+# Recorre el AST producido por el analizador sintactico (parser) y verifica
+# que las construcciones tengan un significado valido segun las reglas
+# semanticas de JavaScript. Ante una violacion genera un mensaje del tipo:
+#     Error Semantico [Linea X]: <causa>
 #
 # ---------------------------------------------------------------------------
-# ENTRADA: lista de tokens producida por el analizador lexico (lexerJS).
+# ENTRADA: el AST (lista de nodos) devuelto por parser.parsear(codigo).
 # ---------------------------------------------------------------------------
-# Mientras el analizador sintactico no construya el AST, las reglas trabajan
-# directamente sobre el flujo de tokens del lexer (misma fuente que usa el
-# generador de logs del lexico). Cada token tiene: .type, .value, .lineno.
-# Cuando el parser produzca un AST, cada verificacion se puede migrar a
-# recorrer el arbol sin cambiar los mensajes de error.
+# CONVENCION DE NODOS (definida en sintactico/parser.py):
+#   ('num'|'str'|'bool', valor, linea) | ('id', nombre, linea)
+#   ('llamada', nombre, [args], linea) | ('impresion', obj, metodo, [args], linea)
+#   ('decl', tipo, nombre, valor, linea)
+#   ('binaria', op, izq, der, linea) | ('unario', op, expr, linea)
+#   ('while', cond, cuerpo, linea) | ('for', init, cond, incr, cuerpo, linea)
+#   ('if', cond, cuerpo, sino, linea) | ('break', linea)
+#   ('funcion', nombre, [params], cuerpo, retorno, linea) | ('return', expr, linea)
+#   ('array', [elems], linea) | ('acceso', nombre, indice, linea)
+#   ('objeto', [(clave, valor), ...], linea)
 # ---------------------------------------------------------------------------
 
 # =====================================================================
@@ -36,7 +42,6 @@ class TablaSimbolos:
     """
 
     def __init__(self):
-        # pila de ambitos; el primero es el global
         self.ambitos = [{}]
 
     def abrir_ambito(self):
@@ -59,23 +64,37 @@ class TablaSimbolos:
         return None
 
 
-def analizar(tokens):
-    """Punto de entrada: ejecuta todas las reglas semanticas sobre la lista
-    de tokens y devuelve la lista de errores encontrados."""
+def _recorrer(nodo):
+    """Generador que recorre recursivamente el AST y produce cada nodo
+    (cada tupla cuya primera posicion es una etiqueta de texto)."""
+    if isinstance(nodo, tuple) and nodo and isinstance(nodo[0], str):
+        yield nodo
+        for hijo in nodo[1:]:
+            yield from _recorrer(hijo)
+    elif isinstance(nodo, list):
+        for hijo in nodo:
+            yield from _recorrer(hijo)
+
+
+def analizar(ast):
+    """Punto de entrada: ejecuta todas las reglas semanticas sobre el AST
+    y devuelve la lista de errores encontrados."""
     errores_semanticos.clear()
+    if ast is None:
+        return errores_semanticos
     tabla = TablaSimbolos()
 
     # ----- APORTE JORGE BRAVO -----
-    verificar_conversion_tipos(tokens)
-    verificar_estructuras_control(tokens)
+    verificar_conversion_tipos(ast)
+    verificar_estructuras_control(ast)
 
     # ----- APORTE CECILIA MONTES (pendiente) -----
-    # verificar_asignacion_tipo(tokens, tabla)
-    # verificar_operaciones_permitidas(tokens)
+    # verificar_asignacion_tipo(ast, tabla)
+    # verificar_operaciones_permitidas(ast)
 
     # ----- APORTE FIORELLA QUIJANO (pendiente) -----
-    # verificar_identificadores(tokens, tabla)
-    # verificar_retorno_funciones(tokens)
+    # verificar_identificadores(ast, tabla)
+    # verificar_retorno_funciones(ast)
 
     return errores_semanticos
 
@@ -102,64 +121,68 @@ def _es_convertible_a_numero(texto):
         return False
 
 
-def verificar_conversion_tipos(tokens):
+def verificar_conversion_tipos(ast):
     """REGLA 1 (Conversion de tipos): las conversiones explicitas solo son
     validas cuando el valor origen puede convertirse al tipo destino.
         Valido:   let numero = Number("25");
         Invalido: let numero = Number("Hola");
-
-    Se detecta el patron  <Funcion> ( <cadena> )  sobre los tokens.
+    Se buscan los nodos ('llamada', nombre, [args], linea).
     """
-    for i, tok in enumerate(tokens):
-        if tok.type == "IDENTIFIER" and tok.value in _FUNCIONES_A_NUMERO:
-            # patron esperado:  IDENTIFIER LPAREN STRING RPAREN
-            if (
-                i + 2 < len(tokens)
-                and tokens[i + 1].type == "LPAREN"
-                and tokens[i + 2].type == "STRING"
-            ):
-                cadena = tokens[i + 2]
-                if not _es_convertible_a_numero(cadena.value):
-                    registrar_error(
-                        cadena.lineno,
-                        "No es posible convertir el valor '{}' al tipo number.".format(
-                            cadena.value
-                        ),
-                    )
+    for nodo in _recorrer(ast):
+        if nodo[0] == "llamada":
+            nombre, args, linea = nodo[1], nodo[2], nodo[-1]
+            if nombre in _FUNCIONES_A_NUMERO and args:
+                arg = args[0]
+                if isinstance(arg, tuple) and arg[0] == "str":
+                    valor = arg[1]
+                    if not _es_convertible_a_numero(valor):
+                        registrar_error(
+                            linea,
+                            "No es posible convertir el valor '{}' al tipo number.".format(
+                                valor
+                            ),
+                        )
 
 
-def verificar_estructuras_control(tokens):
+def verificar_estructuras_control(ast):
     """REGLA 2 (Estructuras de control): 'break' solo puede aparecer dentro
     de un bucle (while/for) o una estructura switch.
         Valido:   while (true) { break; }
         Invalido: let x = 10; break;
-
-    Se lleva una pila de bloques '{ }'; cada bloque que abre justo despues de
-    while / for / switch se marca como bloque de ciclo/switch. Un 'break' es
-    valido si algun bloque abierto en la pila es de ese tipo.
+    Se recorre el arbol marcando cuando se esta dentro de un ciclo. Un 'break'
+    fuera de ese contexto genera error. Las funciones reinician el contexto.
     """
-    pila_bloques = []       # cada elemento: True si es bloque de ciclo/switch
-    proximo_es_ciclo = False
 
-    for tok in tokens:
-        if tok.type in ("WHILE", "FOR", "SWITCH"):
-            proximo_es_ciclo = True
+    def recorrer(nodo, dentro_bucle):
+        if isinstance(nodo, tuple) and nodo and isinstance(nodo[0], str):
+            etiqueta = nodo[0]
 
-        elif tok.type == "LKEY":            # abre bloque '{'
-            pila_bloques.append(proximo_es_ciclo)
-            proximo_es_ciclo = False
-
-        elif tok.type == "RKEY":            # cierra bloque '}'
-            if pila_bloques:
-                pila_bloques.pop()
-
-        elif tok.type == "BREAK":
-            if not any(pila_bloques):
+            if etiqueta == "break" and not dentro_bucle:
                 registrar_error(
-                    tok.lineno,
+                    nodo[-1],
                     "La instruccion 'break' solo puede utilizarse dentro de un "
                     "ciclo o una estructura switch.",
                 )
+                return
+
+            if etiqueta in ("while", "for", "switch"):
+                for hijo in nodo[1:]:
+                    recorrer(hijo, True)
+                return
+
+            if etiqueta == "funcion":   # una funcion abre un contexto nuevo
+                for hijo in nodo[1:]:
+                    recorrer(hijo, False)
+                return
+
+            for hijo in nodo[1:]:
+                recorrer(hijo, dentro_bucle)
+
+        elif isinstance(nodo, list):
+            for hijo in nodo:
+                recorrer(hijo, dentro_bucle)
+
+    recorrer(ast, False)
 
 
 # FIN APORTE JORGE BRAVO
