@@ -1,6 +1,8 @@
 # Generador de Logs - JSAnalyzer
 # Proyecto LP - ESPOL 2026 PAO II
 #
+# Flujo:  lexer  ->  parser (AST)  ->  semantico
+#
 # Genera logs del analisis por fase o completo:
 #   fase: lexico | sintactico | semantico | completo
 #
@@ -25,8 +27,9 @@ for sub in ("", "lexico", "sintactico", "semantico"):
     if ruta not in sys.path:
         sys.path.insert(0, ruta)
 
-import lexerJS as lx        # noqa: E402
-import semantico as sem     # noqa: E402
+import lexerJS as lx        # noqa: E402  (analizador lexico)
+import parser as sintactico  # noqa: E402  (analizador sintactico -> AST)
+import semantico as sem     # noqa: E402  (analizador semantico)
 
 FASES = ("lexico", "sintactico", "semantico", "completo")
 
@@ -39,50 +42,27 @@ def resolver_archivo(archivo):
     return ruta if os.path.exists(ruta) else archivo
 
 
-def _tokenizar(codigo):
+# ------------------------------------------------------------------ fases
+def fase_lexico(codigo):
+    """Analizador lexico: devuelve (tokens, errores_lexicos)."""
     lx.errores_lexicos.clear()
     lx.lexer.lineno = 1
     lx.lexer.input(codigo)
-    return list(lx.lexer)
-
-
-# ------------------------------------------------------------------ fases
-def fase_lexico(codigo):
-    """Devuelve (tokens, errores_lexicos)."""
-    tokens = _tokenizar(codigo)
+    tokens = list(lx.lexer)
     return tokens, list(lx.errores_lexicos)
 
 
 def fase_sintactico(codigo):
-    """Devuelve (ast, errores). El parser puede estar aun en construccion."""
-    try:
-        import parser as sintactico
-    except Exception as e:
-        return None, ["Analizador sintactico no disponible: {}".format(e)]
-
-    if hasattr(sintactico, "parsear"):
-        try:
-            return sintactico.parsear(codigo)
-        except Exception as e:
-            return None, ["Error al ejecutar el parser: {}".format(e)]
-
-    if getattr(sintactico, "parser", None) is not None:
-        errs = getattr(sintactico, "errores_sintacticos", [])
-        try:
-            errs.clear()
-        except Exception:
-            pass
-        lx.lexer.lineno = 1
-        ast = sintactico.parser.parse(codigo, lexer=lx.lexer)
-        return ast, list(errs)
-
-    return None, ["El analizador sintactico aun no esta implementado (parser en construccion)."]
+    """Analizador sintactico: devuelve (ast, errores_sintacticos)."""
+    return sintactico.parsear(codigo)
 
 
 def fase_semantico(codigo):
-    """Devuelve la lista de errores semanticos (trabaja sobre los tokens)."""
-    tokens = _tokenizar(codigo)
-    return list(sem.analizar(tokens))
+    """Flujo completo lexer -> parser -> semantico.
+    Devuelve (errores_semanticos, errores_sintacticos)."""
+    ast, err_sint = sintactico.parsear(codigo)
+    err_sem = list(sem.analizar(ast))
+    return err_sem, list(err_sint)
 
 
 # --------------------------------------------------------- secciones del log
@@ -104,17 +84,22 @@ def _seccion_sintactico(codigo, log):
     _, errores = fase_sintactico(codigo)
     log.write("=== ANALISIS SINTACTICO ===\n")
     log.write("Errores sintacticos: {}\n".format(len(errores)))
-    for e in errores:
-        log.write("{}\n".format(e))
+    if errores:
+        for e in errores:
+            log.write("{}\n".format(e))
+    else:
+        log.write("Sin errores sintacticos.\n")
     log.write("\n")
 
 
 def _seccion_semantico(codigo, log):
-    errores = fase_semantico(codigo)
+    err_sem, err_sint = fase_semantico(codigo)
     log.write("=== ANALISIS SEMANTICO ===\n")
-    log.write("Errores semanticos: {}\n".format(len(errores)))
-    if errores:
-        for e in errores:
+    log.write("Errores semanticos: {}\n".format(len(err_sem)))
+    if err_sint:
+        log.write("(Aviso: hubo errores sintacticos; el AST puede estar incompleto)\n")
+    if err_sem:
+        for e in err_sem:
             log.write("{}\n".format(e))
     else:
         log.write("Sin errores semanticos.\n")
@@ -151,6 +136,7 @@ def generar_log(fase, nombre, archivo):
         log.write("LOG ANALISIS ({}) - archivo: {}\n".format(fase.upper(), archivo))
         log.write("Generado por: {}\n".format(nombre))
         log.write("Fecha: {}\n".format(ahora.strftime("%d-%m-%Y %H:%M:%S")))
+        log.write("Flujo: lexer -> parser -> semantico\n")
         log.write("=" * 60 + "\n\n")
         for f_ in fases:
             _SECCIONES[f_](codigo, log)
