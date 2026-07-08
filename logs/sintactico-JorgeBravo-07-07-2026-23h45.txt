@@ -1,0 +1,10 @@
+LOG ANALISIS (SINTACTICO) - archivo: algoritmo_jorge.js
+Generado por: JorgeBravo
+Fecha: 07-07-2026 23:45:37
+Flujo: lexer -> parser -> semantico
+============================================================
+
+=== ANALISIS SINTACTICO ===
+Errores sintacticos: 0
+Sin errores sintacticos.
+

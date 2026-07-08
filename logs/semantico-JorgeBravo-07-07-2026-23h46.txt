@@ -1,0 +1,11 @@
+LOG ANALISIS (SEMANTICO) - archivo: algoritmo_jorge.js
+Generado por: JorgeBravo
+Fecha: 07-07-2026 23:46:10
+Flujo: lexer -> parser -> semantico
+============================================================
+
+=== ANALISIS SEMANTICO ===
+Errores semanticos: 2
+Error Semantico [Linea 45]: No es posible convertir el valor 'Hola' al tipo number.
+Error Semantico [Linea 48]: La instruccion 'break' solo puede utilizarse dentro de un ciclo o una estructura switch.
+
