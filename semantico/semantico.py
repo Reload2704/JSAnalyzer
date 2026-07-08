@@ -93,8 +93,8 @@ def analizar(ast):
     verificar_operaciones_permitidas(ast)
 
     # ----- APORTE FIORELLA QUIJANO (pendiente) -----
-    # verificar_identificadores(ast, tabla)
-    # verificar_retorno_funciones(ast)
+    verificar_identificadores(ast, tabla)
+    verificar_retorno_funciones(ast)
 
     return errores_semanticos
 
@@ -263,6 +263,58 @@ def verificar_operaciones_permitidas(ast):
 # Reglas: (1) Identificadores (declaracion previa y alcance)
 #         (2) Retorno de funciones
 # =====================================================================
+def verificar_identificadores(ast, tabla):
+    # función auxiliar para revisar el árbol paso a paso
+    def revisar_nodo(nodo):
+        # si el nodo está vacío o no es una tupla válida, salimos
+        if type(nodo) is not tuple or len(nodo) == 0:
+            return
+
+        etiqueta = nodo[0] # Ej: 'decl', 'id', 'funcion'
+
+        # si están declarando una variable (let, const)
+        if etiqueta == "decl":
+            nombre_variable = nodo[2]
+            tabla.declarar(nombre_variable)
+            revisar_nodo(nodo[3]) # Revisamos el valor asignado por si adentro hay más variables
+
+        # si están usando una variable que ya existe
+        elif etiqueta == "id":
+            nombre_variable = nodo[1]
+            linea = nodo[-1]
+            #si alguien guardó este nombre antes
+            if tabla.existe(nombre_variable) == False:
+                registrar_error(linea, f"El identificador '{nombre_variable}' no ha sido declarado.")
+
+        # entramos a un bloque cerrado (función, if, while)
+        elif etiqueta in ["funcion", "if", "while", "for"]:
+            if etiqueta == "funcion":
+                tabla.declarar(nodo[1]) # Guardo el nombre de la función afuera
+            
+            # abro una nueva capa de memoria
+            # las variables creadas aquí adentro, mueren al salir
+            tabla.abrir_ambito()
+            
+            for hijo in nodo[1:]:
+                if type(hijo) is list:
+                    for sub_hijo in hijo: revisar_nodo(sub_hijo)
+                else:
+                    revisar_nodo(hijo)
+                    
+            tabla.cerrar_ambito() # Destruyo la capa de memoria al salir del bloque
+
+        # cualquier otra instrucción (sumas, restas, impresiones)
+        else:
+            for hijo in nodo[1:]:
+                if type(hijo) is list:
+                    for sub_hijo in hijo: revisar_nodo(sub_hijo)
+                else:
+                    revisar_nodo(hijo)
+
+    # arranco la revisión desde la raíz del árbol
+    revisar_nodo(ast)
+
+
 
 
 
