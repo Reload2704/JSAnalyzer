@@ -1,0 +1,13 @@
+12:54 pm
+Prueba 3 con: (0.5) [false] ; . {1899n }
+Tipo: LPAREN     | Valor: ( | Tipo Python: str
+Tipo: NUMBER     | Valor: 0.5 | Tipo Python: float
+Tipo: RPAREN     | Valor: ) | Tipo Python: str
+Tipo: LBRACKET   | Valor: [ | Tipo Python: str
+Tipo: BOOLEAN    | Valor: False | Tipo Python: bool
+Tipo: RBRACKET   | Valor: ] | Tipo Python: str
+Tipo: SEMICOLON  | Valor: ; | Tipo Python: str
+Tipo: DOT        | Valor: . | Tipo Python: str
+Tipo: LKEY       | Valor: { | Tipo Python: str
+Tipo: BIGINT     | Valor: 1899 | Tipo Python: int
+Tipo: RKEY       | Valor: } | Tipo Python: str

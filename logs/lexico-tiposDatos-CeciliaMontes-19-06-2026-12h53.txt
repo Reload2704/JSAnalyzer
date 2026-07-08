@@ -1,0 +1,7 @@
+12:53 pm
+Prueba 2 con: 5555n 'wiwiwi'null 123 0.56
+Tipo: BIGINT     | Valor: 5555 | Tipo Python: int
+Tipo: STRING     | Valor: wiwiwi | Tipo Python: str
+Tipo: NULL       | Valor: None | Tipo Python: NoneType
+Tipo: NUMBER     | Valor: 123 | Tipo Python: int
+Tipo: NUMBER     | Valor: 0.56 | Tipo Python: float
