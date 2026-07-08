@@ -1,0 +1,10 @@
+LOG ANALISIS (SINTACTICO) - archivo: algoritmo_cecilia.js
+Generado por: Cecilia Montes
+Fecha: 08-07-2026 17:45:54
+Flujo: lexer -> parser -> semantico
+============================================================
+
+=== ANALISIS SINTACTICO ===
+Errores sintacticos: 1
+Error Sintactico [Linea 6]: token inesperado 'undefined' (UNDEFINED).
+

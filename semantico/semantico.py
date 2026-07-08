@@ -89,8 +89,8 @@ def analizar(ast):
     verificar_estructuras_control(ast)
 
     # ----- APORTE CECILIA MONTES (pendiente) -----
-    # verificar_asignacion_tipo(ast, tabla)
-    # verificar_operaciones_permitidas(ast)
+    verificar_asignacion_tipo(ast, tabla)
+    verificar_operaciones_permitidas(ast)
 
     # ----- APORTE FIORELLA QUIJANO (pendiente) -----
     # verificar_identificadores(ast, tabla)
@@ -194,6 +194,64 @@ def verificar_estructuras_control(ast):
 # Reglas: (1) Asignacion de tipo (const no reasignable)
 #         (2) Operaciones permitidas (aritmeticas entre numericos)
 # =====================================================================
+
+def verificar_asignacion_tipo(ast, tabla):
+    for nodo in _recorrer(ast):
+
+        if nodo[0] == "decl":
+
+            tipo_decl = nodo[1]      # let / const / var
+            nombre = nodo[2]
+            valor = nodo[3]
+            linea = nodo[4]
+
+            tipo = None
+
+            if valor is not None:
+
+                if valor[0] == "num":
+                    tipo = "number"
+
+                elif valor[0] == "str":
+                    tipo = "string"
+
+                elif valor[0] == "bool":
+                    tipo = "boolean"
+
+                elif valor[0] == "array":
+                    tipo = "array"
+
+                elif valor[0] == "objeto":
+                    tipo = "object"
+
+            tabla.declarar(
+                nombre,
+                tipo,
+                es_constante=(tipo_decl == "const")
+            )
+    
+def verificar_operaciones_permitidas(ast):
+     for nodo in _recorrer(ast):
+
+        if nodo[0] != "binaria":
+            continue
+
+        operador = nodo[1]
+        izquierda = nodo[2]
+        derecha = nodo[3]
+        linea = nodo[4]
+
+        if operador not in ("+", "-", "*", "/", "%"):
+            continue
+
+        if izquierda[0] != "num" or derecha[0] != "num":
+
+            registrar_error(
+                linea,
+                "La operación '{}' solo puede realizarse entre valores numéricos.".format(
+                    operador
+                )
+            )
 
 
 # FIN APORTE CECILIA MONTES
