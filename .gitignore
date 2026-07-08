@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# PLY (tablas generadas)
+parser.out
+parsetab.py
+lextab.py
+
+# Entornos virtuales
+.venv/
+venv/
+env/
+
+# Editores / IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store
