@@ -1,0 +1,119 @@
+LOG ANALISIS (COMPLETO) - archivo: algoritmo_fiorella.js
+Generado por: FiorellaQuijano
+Fecha: 08-07-2026 19:25:10
+Flujo: lexer -> parser -> semantico
+============================================================
+
+=== ANALISIS LEXICO ===
+Tokens reconocidos: 99  |  Errores lexicos: 0
+Linea 1   | COMMENT_LINE | '// algoritmo de prueba -  Fiorella Quijano'
+Linea 3   | LET          | 'let'
+Linea 3   | IDENTIFIER   | '$precioBase'
+Linea 3   | ASSIGN       | '='
+Linea 3   | NUMBER       | 100
+Linea 3   | SEMICOLON    | ';'
+Linea 4   | CONST        | 'const'
+Linea 4   | IDENTIFIER   | '_impuestoLocal'
+Linea 4   | ASSIGN       | '='
+Linea 4   | NUMBER       | 0.12
+Linea 4   | SEMICOLON    | ';'
+Linea 5   | VAR          | 'var'
+Linea 5   | IDENTIFIER   | 'totalCalculado'
+Linea 5   | ASSIGN       | '='
+Linea 5   | IDENTIFIER   | '$precioBase'
+Linea 5   | SEMICOLON    | ';'
+Linea 7   | FUNCTION     | 'function'
+Linea 7   | IDENTIFIER   | 'procesarPago'
+Linea 7   | LPAREN       | '('
+Linea 7   | RPAREN       | ')'
+Linea 7   | LKEY         | '{'
+Linea 8   | IF           | 'if'
+Linea 8   | LPAREN       | '('
+Linea 8   | IDENTIFIER   | 'totalCalculado'
+Linea 8   | RPAREN       | ')'
+Linea 8   | LKEY         | '{'
+Linea 9   | RETURN       | 'return'
+Linea 9   | IDENTIFIER   | 'totalCalculado'
+Linea 9   | SEMICOLON    | ';'
+Linea 10  | RKEY         | '}'
+Linea 10  | ELSE         | 'else'
+Linea 10  | LKEY         | '{'
+Linea 11  | LET          | 'let'
+Linea 11  | IDENTIFIER   | 'error_interno'
+Linea 11  | ASSIGN       | '='
+Linea 11  | NUMBER       | 1
+Linea 11  | SEMICOLON    | ';'
+Linea 12  | RKEY         | '}'
+Linea 14  | WHILE        | 'while'
+Linea 14  | LPAREN       | '('
+Linea 14  | IDENTIFIER   | 'totalCalculado'
+Linea 14  | RPAREN       | ')'
+Linea 14  | LKEY         | '{'
+Linea 15  | BREAK        | 'break'
+Linea 15  | SEMICOLON    | ';'
+Linea 16  | RKEY         | '}'
+Linea 18  | FOR          | 'for'
+Linea 18  | LPAREN       | '('
+Linea 18  | LET          | 'let'
+Linea 18  | IDENTIFIER   | 'i'
+Linea 18  | ASSIGN       | '='
+Linea 18  | NUMBER       | 0
+Linea 18  | SEMICOLON    | ';'
+Linea 18  | IDENTIFIER   | 'i'
+Linea 18  | SEMICOLON    | ';'
+Linea 18  | IDENTIFIER   | 'i'
+Linea 18  | RPAREN       | ')'
+Linea 18  | LKEY         | '{'
+Linea 19  | SWITCH       | 'switch'
+Linea 19  | LPAREN       | '('
+Linea 19  | IDENTIFIER   | '$precioBase'
+Linea 19  | RPAREN       | ')'
+Linea 19  | LKEY         | '{'
+Linea 20  | IDENTIFIER   | 'default'
+Linea 20  | COLON        | ':'
+Linea 21  | BREAK        | 'break'
+Linea 21  | SEMICOLON    | ';'
+Linea 22  | RKEY         | '}'
+Linea 23  | RKEY         | '}'
+Linea 24  | RKEY         | '}'
+Linea 26  | COMMENT_LINE | '// ========================================================='
+Linea 27  | COMMENT_LINE | '// ERRORES SEMÁNTICOS '
+Linea 28  | COMMENT_LINE | '// ========================================================='
+Linea 30  | COMMENT_LINE | '// ERROR 1: Uso de una variable que jamás fue declarada (Regla de Identificadores)'
+Linea 31  | LET          | 'let'
+Linea 31  | IDENTIFIER   | 'calculoFalso'
+Linea 31  | ASSIGN       | '='
+Linea 31  | IDENTIFIER   | 'variableFantasma'
+Linea 31  | PLUS         | '+'
+Linea 31  | NUMBER       | 50
+Linea 31  | SEMICOLON    | ';'
+Linea 33  | COMMENT_LINE | '// ERROR 2: Uso de una variable fuera de su alcance/scope (Regla de Scope)'
+Linea 34  | COMMENT_LINE | "// 'error_interno' nació dentro del 'else' de arriba, aquí afuera ya no existe en memoria."
+Linea 35  | LET          | 'let'
+Linea 35  | IDENTIFIER   | 'copiaDeError'
+Linea 35  | ASSIGN       | '='
+Linea 35  | IDENTIFIER   | 'error_interno'
+Linea 35  | SEMICOLON    | ';'
+Linea 37  | COMMENT_LINE | '// ERROR 3: Retorno inconsistente (Regla de Retorno de Funciones)'
+Linea 38  | FUNCTION     | 'function'
+Linea 38  | IDENTIFIER   | 'obtenerDescuento'
+Linea 38  | LPAREN       | '('
+Linea 38  | RPAREN       | ')'
+Linea 38  | LKEY         | '{'
+Linea 39  | COMMENT_LINE | '// Retorna un string cuando la lógica de la regla espera coincidencia de tipos'
+Linea 40  | RETURN       | 'return'
+Linea 40  | STRING       | 'veinte por ciento'
+Linea 40  | SEMICOLON    | ';'
+Linea 41  | RKEY         | '}'
+
+=== ANALISIS SINTACTICO ===
+Errores sintacticos: 3
+Error Sintactico [Linea 9]: token inesperado 'return' (RETURN).
+Error Sintactico [Linea 18]: token inesperado ';' (SEMICOLON).
+Error Sintactico [Linea 19]: token inesperado '{' (LKEY).
+
+=== ANALISIS SEMANTICO ===
+Errores semanticos: 1
+(Aviso: hubo errores sintacticos; el AST puede estar incompleto)
+Error Semantico [Linea 31]: La operación '+' solo puede realizarse entre valores numéricos.
+
