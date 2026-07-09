@@ -1,0 +1,92 @@
+LOG ANALISIS (COMPLETO) - archivo: algoritmo_fiorella.js
+Generado por: FiorellaQuijano
+Fecha: 08-07-2026 19:48:39
+Flujo: lexer -> parser -> semantico
+============================================================
+
+=== ANALISIS LEXICO ===
+Tokens reconocidos: 73  |  Errores lexicos: 0
+Linea 1   | COMMENT_LINE | '// algoritmo de prueba -  Fiorella Quijano'
+Linea 3   | LET          | 'let'
+Linea 3   | IDENTIFIER   | 'precioBase'
+Linea 3   | ASSIGN       | '='
+Linea 3   | NUMBER       | 100
+Linea 3   | SEMICOLON    | ';'
+Linea 4   | LET          | 'let'
+Linea 4   | IDENTIFIER   | 'totalCalculado'
+Linea 4   | ASSIGN       | '='
+Linea 4   | NUMBER       | 200
+Linea 4   | SEMICOLON    | ';'
+Linea 6   | COMMENT_LINE | '// 1. Sintaxis limpia para la función (return estricto al final)'
+Linea 7   | FUNCTION     | 'function'
+Linea 7   | IDENTIFIER   | 'procesarPago'
+Linea 7   | LPAREN       | '('
+Linea 7   | RPAREN       | ')'
+Linea 7   | LKEY         | '{'
+Linea 8   | LET          | 'let'
+Linea 8   | IDENTIFIER   | 'temporal'
+Linea 8   | ASSIGN       | '='
+Linea 8   | NUMBER       | 1
+Linea 8   | SEMICOLON    | ';'
+Linea 9   | RETURN       | 'return'
+Linea 9   | IDENTIFIER   | 'temporal'
+Linea 9   | SEMICOLON    | ';'
+Linea 10  | RKEY         | '}'
+Linea 12  | COMMENT_LINE | '// 2. Sintaxis limpia para crear un bloque cerrado (Scope)'
+Linea 13  | WHILE        | 'while'
+Linea 13  | LPAREN       | '('
+Linea 13  | IDENTIFIER   | 'precioBase'
+Linea 13  | RPAREN       | ')'
+Linea 13  | LKEY         | '{'
+Linea 14  | LET          | 'let'
+Linea 14  | IDENTIFIER   | 'error_interno'
+Linea 14  | ASSIGN       | '='
+Linea 14  | NUMBER       | 1
+Linea 14  | SEMICOLON    | ';'
+Linea 15  | BREAK        | 'break'
+Linea 15  | SEMICOLON    | ';'
+Linea 16  | RKEY         | '}'
+Linea 18  | COMMENT_LINE | '// ========================================================='
+Linea 19  | COMMENT_LINE | '// INYECCIÓN DE ERRORES SEMÁNTICOS EXCLUSIVOS DE FIORELLA'
+Linea 20  | COMMENT_LINE | '// ========================================================='
+Linea 22  | COMMENT_LINE | '// ERROR 1: Uso de una variable jamás declarada'
+Linea 23  | COMMENT_LINE | "// (Asignamos directamente sin usar el '+' para no activar la regla de Cecilia)"
+Linea 24  | LET          | 'let'
+Linea 24  | IDENTIFIER   | 'calculoFalso'
+Linea 24  | ASSIGN       | '='
+Linea 24  | IDENTIFIER   | 'variableFantasma'
+Linea 24  | SEMICOLON    | ';'
+Linea 26  | COMMENT_LINE | '// ERROR 2: Variable fuera de alcance (Scope)'
+Linea 27  | COMMENT_LINE | "// 'error_interno' nació dentro del 'while', aquí afuera el parser no debe recordarla."
+Linea 28  | LET          | 'let'
+Linea 28  | IDENTIFIER   | 'copiaDeError'
+Linea 28  | ASSIGN       | '='
+Linea 28  | IDENTIFIER   | 'error_interno'
+Linea 28  | SEMICOLON    | ';'
+Linea 30  | COMMENT_LINE | '// ERROR 3: Retorno inconsistente'
+Linea 31  | FUNCTION     | 'function'
+Linea 31  | IDENTIFIER   | 'obtenerDescuento'
+Linea 31  | LPAREN       | '('
+Linea 31  | RPAREN       | ')'
+Linea 31  | LKEY         | '{'
+Linea 32  | LET          | 'let'
+Linea 32  | IDENTIFIER   | 'variableDummy'
+Linea 32  | ASSIGN       | '='
+Linea 32  | NUMBER       | 0
+Linea 32  | SEMICOLON    | ';'
+Linea 33  | RETURN       | 'return'
+Linea 33  | STRING       | 'veinte por ciento'
+Linea 33  | SEMICOLON    | ';'
+Linea 33  | COMMENT_LINE | '// Se retorna un String, debe generar error'
+Linea 34  | RKEY         | '}'
+
+=== ANALISIS SINTACTICO ===
+Errores sintacticos: 0
+Sin errores sintacticos.
+
+=== ANALISIS SEMANTICO ===
+Errores semanticos: 3
+Error Semantico [Linea 24]: El identificador 'variableFantasma' no ha sido declarado.
+Error Semantico [Linea 28]: El identificador 'error_interno' no ha sido declarado.
+Error Semantico [Linea 33]: El valor retornado no coincide con el tipo esperado.
+

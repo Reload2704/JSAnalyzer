@@ -94,7 +94,7 @@ def analizar(ast):
 
     # ----- APORTE FIORELLA QUIJANO (pendiente) -----
     verificar_identificadores(ast, tabla)
-    #verificar_retorno_funciones(ast)
+    verificar_retorno_funciones(ast)
 
     return errores_semanticos
 
@@ -264,8 +264,12 @@ def verificar_operaciones_permitidas(ast):
 #         (2) Retorno de funciones
 # =====================================================================
 def verificar_identificadores(ast, tabla):
+    tabla.ambitos = [{}]
     # función auxiliar para revisar el árbol paso a paso
     def revisar_nodo(nodo):
+        if type(nodo) is list:
+            for hijo in nodo: revisar_nodo(hijo)
+            return
         # si el nodo está vacío o no es una tupla válida, salimos
         if type(nodo) is not tuple or len(nodo) == 0:
             return
