@@ -1,0 +1,11 @@
+LOG ANALISIS (SEMANTICO) - archivo: algoritmo_cecilia.js
+Generado por: Cecilia Montes
+Fecha: 09-07-2026 13:19:38
+Flujo: lexer -> parser -> semantico
+============================================================
+
+=== ANALISIS SEMANTICO ===
+Errores semanticos: 0
+(Aviso: hubo errores sintacticos; el AST puede estar incompleto)
+Sin errores semanticos.
+

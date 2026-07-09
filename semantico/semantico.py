@@ -90,7 +90,7 @@ def analizar(ast):
 
     # ----- APORTE CECILIA MONTES -----
     verificar_asignacion_tipo(ast, tabla)
-    verificar_operaciones_permitidas(ast)
+    verificar_operaciones_permitidas(ast, tabla)
 
     # ----- APORTE FIORELLA QUIJANO -----
     verificar_identificadores(ast, tabla)
@@ -217,9 +217,35 @@ def verificar_asignacion_tipo(ast, tabla):
                 tipo,
                 es_constante=(tipo_decl == "const")
             )
-    
-def verificar_operaciones_permitidas(ast):
-     for nodo in _recorrer(ast):
+
+def _inferir_tipo_operando(nodo, tabla):
+    etiqueta = nodo[0]
+
+    if etiqueta == "num":
+        return "number"
+    elif etiqueta == "str":
+        return "string"
+    elif etiqueta == "bool":
+        return "boolean"
+    elif etiqueta == "array":
+        return "array"
+    elif etiqueta == "objeto":
+        return "object"
+    elif etiqueta == "id":
+        nombre = nodo[1]
+        simbolo = tabla.obtener(nombre)
+        return simbolo["tipo"] if simbolo else None
+    elif etiqueta == "binaria":
+        op = nodo[1]
+        if op in ("+", "-", "*", "/", "%"):
+            return "number"
+        return None
+
+    return None
+
+
+def verificar_operaciones_permitidas(ast, tabla):
+    for nodo in _recorrer(ast):
 
         if nodo[0] != "binaria":
             continue
@@ -232,15 +258,17 @@ def verificar_operaciones_permitidas(ast):
         if operador not in ("+", "-", "*", "/", "%"):
             continue
 
-        if izquierda[0] != "num" or derecha[0] != "num":
+        tipo_izq = _inferir_tipo_operando(izquierda, tabla)
+        tipo_der = _inferir_tipo_operando(derecha, tabla)
 
+        if tipo_izq != "number" or tipo_der != "number":
             registrar_error(
                 linea,
                 "La operación '{}' solo puede realizarse entre valores numéricos.".format(
                     operador
                 )
             )
-
+    
 
 # FIN APORTE CECILIA MONTES
 # =====================================================================
