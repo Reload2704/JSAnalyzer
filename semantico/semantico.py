@@ -88,11 +88,11 @@ def analizar(ast):
     verificar_conversion_tipos(ast)
     verificar_estructuras_control(ast)
 
-    # ----- APORTE CECILIA MONTES (pendiente) -----
+    # ----- APORTE CECILIA MONTES -----
     verificar_asignacion_tipo(ast, tabla)
     verificar_operaciones_permitidas(ast)
 
-    # ----- APORTE FIORELLA QUIJANO (pendiente) -----
+    # ----- APORTE FIORELLA QUIJANO -----
     verificar_identificadores(ast, tabla)
     verificar_retorno_funciones(ast)
 
@@ -109,8 +109,6 @@ _FUNCIONES_A_NUMERO = ("Number", "parseInt", "parseFloat")
 
 
 def _es_convertible_a_numero(texto):
-    """Indica si una cadena puede convertirse a un numero (como en JS).
-    Ej: "25" -> True,  "3.14" -> True,  "Hola" -> False."""
     texto = texto.strip()
     if texto == "":
         return True  # Number("") es 0 en JS
@@ -120,14 +118,8 @@ def _es_convertible_a_numero(texto):
     except ValueError:
         return False
 
-
+# ====================== Regla 1 - Conversion de tipos ==========================
 def verificar_conversion_tipos(ast):
-    """REGLA 1 (Conversion de tipos): las conversiones explicitas solo son
-    validas cuando el valor origen puede convertirse al tipo destino.
-        Valido:   let numero = Number("25");
-        Invalido: let numero = Number("Hola");
-    Se buscan los nodos ('llamada', nombre, [args], linea).
-    """
     for nodo in _recorrer(ast):
         if nodo[0] == "llamada":
             nombre, args, linea = nodo[1], nodo[2], nodo[-1]
@@ -143,16 +135,11 @@ def verificar_conversion_tipos(ast):
                             ),
                         )
 
+# ==============================================================================
+
+# ==================== Regla 2 - Estructuras de control - Break ==========================
 
 def verificar_estructuras_control(ast):
-    """REGLA 2 (Estructuras de control): 'break' solo puede aparecer dentro
-    de un bucle (while/for) o una estructura switch.
-        Valido:   while (true) { break; }
-        Invalido: let x = 10; break;
-    Se recorre el arbol marcando cuando se esta dentro de un ciclo. Un 'break'
-    fuera de ese contexto genera error. Las funciones reinician el contexto.
-    """
-
     def recorrer(nodo, dentro_bucle):
         if isinstance(nodo, tuple) and nodo and isinstance(nodo[0], str):
             etiqueta = nodo[0]
@@ -184,6 +171,7 @@ def verificar_estructuras_control(ast):
 
     recorrer(ast, False)
 
+# ==============================================================================
 
 # FIN APORTE JORGE BRAVO
 # =====================================================================
