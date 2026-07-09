@@ -94,7 +94,7 @@ def analizar(ast):
 
     # ----- APORTE FIORELLA QUIJANO (pendiente) -----
     verificar_identificadores(ast, tabla)
-    verificar_retorno_funciones(ast)
+    #verificar_retorno_funciones(ast)
 
     return errores_semanticos
 
@@ -315,7 +315,33 @@ def verificar_identificadores(ast, tabla):
     revisar_nodo(ast)
 
 
-
+def verificar_retorno_funciones(ast):
+    # uso la función _recorrer del equipo para buscar en todo el archivo
+    for nodo in _recorrer(ast):
+        
+        # me detengo solo cuando encuentro la definición de una función
+        if nodo[0] == "funcion":
+            cuerpo_funcion = nodo[3]
+            tipo_prometido = nodo[4] 
+            
+            # ahora busco los return dentro de esta función
+            for sub_nodo in _recorrer(cuerpo_funcion):
+                if sub_nodo[0] == "return":
+                    valor_retornado = sub_nodo[1] 
+                    linea = sub_nodo[2]
+                    
+                    tipo_real = None
+                    # averiguo el tipo de dato real que están intentando devolver
+                    if type(valor_retornado) is tuple:
+                        etiqueta_valor = valor_retornado[0]
+                        if etiqueta_valor == "num": tipo_real = "number"
+                        elif etiqueta_valor == "str": tipo_real = "string"
+                        elif etiqueta_valor == "bool": tipo_real = "boolean"
+                        
+                    # si ambos existen y no son iguales, lanzo el error
+                    if tipo_prometido != None and tipo_real != None:
+                        if tipo_prometido != tipo_real:
+                            registrar_error(linea, "El valor retornado no coincide con el tipo esperado.")
 
 
 # FIN APORTE FIORELLA QUIJANO
