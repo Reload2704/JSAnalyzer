@@ -1,41 +1,34 @@
 // algoritmo de prueba -  Fiorella Quijano
 
-let $precioBase = 100;
-const _impuestoLocal = 0.12;
-var totalCalculado = $precioBase;
+let precioBase = 100;
+let totalCalculado = 200;
 
+// 1. Sintaxis limpia para la función (return estricto al final)
 function procesarPago() {
-    if (totalCalculado) {
-        return totalCalculado;
-    } else {
-        let error_interno = 1;
-    }
-    
-    while (totalCalculado) {
-        break;
-    }
-    
-    for (let i = 0; i; i) {
-        switch($precioBase) {
-            default:
-                break;
-        }
-    }
+    let temporal = 1;
+    return temporal;
+}
+
+// 2. Sintaxis limpia para crear un bloque cerrado (Scope)
+while (precioBase) {
+    let error_interno = 1;
+    break;
 }
 
 // =========================================================
-// ERRORES SEMÁNTICOS 
+// INYECCIÓN DE ERRORES SEMÁNTICOS EXCLUSIVOS DE FIORELLA
 // =========================================================
 
-// ERROR 1: Uso de una variable que jamás fue declarada (Regla de Identificadores)
-let calculoFalso = variableFantasma + 50;
+// ERROR 1: Uso de una variable jamás declarada
+// (Asignamos directamente sin usar el '+' para no activar la regla de Cecilia)
+let calculoFalso = variableFantasma;
 
-// ERROR 2: Uso de una variable fuera de su alcance/scope (Regla de Scope)
-// 'error_interno' nació dentro del 'else' de arriba, aquí afuera ya no existe en memoria.
+// ERROR 2: Variable fuera de alcance (Scope)
+// 'error_interno' nació dentro del 'while', aquí afuera el parser no debe recordarla.
 let copiaDeError = error_interno;
 
-// ERROR 3: Retorno inconsistente (Regla de Retorno de Funciones)
+// ERROR 3: Retorno inconsistente
 function obtenerDescuento() {
-    // Retorna un string cuando la lógica de la regla espera coincidencia de tipos
-    return "veinte por ciento"; 
+    let variableDummy = 0;
+    return "veinte por ciento"; // Se retorna un String, debe generar error
 }
